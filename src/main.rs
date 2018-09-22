@@ -6,19 +6,6 @@ use rand::Rng;
 
 fn main() {
     guess_number();
-
-    let strin = String::from("hello");
-    let num = 1;
-
-    takes_ownership(strin);
-
-    makes_copy(num);
-
-    println!("{}", strin);
-
-
-
-
 }
 
 fn takes_ownership(some_string: String) {
