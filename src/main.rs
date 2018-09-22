@@ -30,20 +30,77 @@ impl Rectangle {
     }
 }
 
+enum IpAddrKind {
+    V4,
+    V6
+}
+
+#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+    //...
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState)
+}
+
+enum Message {
+    Quit,
+    Move {x: i32, y: i32},
+    Write(String),
+    ChangeColor(i32, i32, i32)
+}
+
+impl Message {
+    fn call(&self) {
+
+    }
+}
+
 
 fn main() {
+
+}
+
+fn value_in_cents(coin : Coin) -> u32 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter(state) => {
+            println!("State quarter from {:?}", state);
+            25
+        },
+    }
+}
+
+fn option() {
+    let some_number = Some(5);
+    let some_string = Some("A string");
+
+    let absent_number : Option<i32> = None;
+}
+
+fn messages() {
+    let m = Message::Write(String::from("Hello"));
+    m.call();
+}
+
+fn rectangles() {
     let rect1 = Rectangle {width: 30, height: 50};
+
     let rect2 = Rectangle {width: 10, height: 40};
     let rect3 = Rectangle {width: 60, height: 45};
 
     println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
     println!("Can rect2 hold rect1? {}", rect2.can_hold(&rect1));
-}
 
-fn rectangles() {
-    let rect1 = Rectangle { width: 30, height: 50};
     println!("The area of the rectangle is {} square pixels.", rect1.area());
-
 }
 
 fn build_user(email: String, username: String) -> User {
@@ -55,6 +112,9 @@ fn build_user(email: String, username: String) -> User {
     }
 }
 
+fn coins() {
+
+}
 
 
 fn slices() {
