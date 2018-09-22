@@ -4,11 +4,30 @@ use std::io;
 use std::cmp::Ordering;
 use rand::Rng;
 
+struct User {
+    username: String,
+    email : String,
+    sign_in_count: u64,
+    active: bool
+}
+
 fn main() {
-    slices();
+
+    let user1 = build_user(String::from("chris@lol.com"), String::from("abcd"));
+
 
 
 }
+
+fn build_user(email: String, username: String) -> User {
+    User {
+        email,
+        username,
+        active: true,
+        sign_in_count: 1
+    }
+}
+
 
 fn slices() {
     let s = String::from("hello world");
