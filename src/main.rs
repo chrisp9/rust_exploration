@@ -5,7 +5,19 @@ use std::cmp::Ordering;
 use rand::Rng;
 
 fn main() {
-    guess_number();
+    slices();
+
+
+}
+
+fn slices() {
+    let s = String::from("hello world");
+
+    let hello = &s[0..=4];
+    let world = &s[6..=10];
+
+    println!("{}", hello);
+    println!("{}", world);
 }
 
 fn takes_ownership(some_string: String) {
@@ -15,6 +27,19 @@ fn takes_ownership(some_string: String) {
 fn makes_copy(some_integer: i32) {
     println!("{}", some_integer);
 }
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for(i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+
+    return s.len();
+}
+
 
 fn guess_number() {
     println!("Guess the number!");
