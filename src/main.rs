@@ -3,6 +3,10 @@ extern crate rand;
 use std::io;
 use std::cmp::Ordering;
 use rand::Rng;
+use std::collections::HashMap;
+
+use std::io::Read;
+use std::fs::File;
 
 struct User {
     username: String,
@@ -62,10 +66,66 @@ impl Message {
     }
 }
 
-
 fn main() {
+    strings();
+    hashmaps();
+    read_username_from_file();
+}
+
+fn hashmaps() {
+    let field_name = String::from("Favorite Color");
+    let field_value = String::from("Blue");
+
+    let mut map = HashMap::new();
+    map.insert(field_name, field_value);
+
+    let key = String::from("Favorite Color");
+
+    let item = map.get(&key).unwrap();
+}
+
+fn strings() {
+    let s1 = String::from("Hello, ");
+    let s2 = String::from("World!");
+
+    let s3 = s1 + &s2;
+
 
 }
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut file_contents = String::new();
+    File::open("hello.txt")?.read_to_string(&mut file_contents)?;
+    Ok(file_contents)
+}
+
+fn vector() {
+    let v: Vec<i32> = Vec::new();
+
+    let v = vec![1,2,3,4,5];
+    let third: &i32 = &v[2];
+
+    let v_index = 2;
+
+    match v.get(v_index) {
+        Some(_) => {println!("Reachable element at index: {}", v_index)},
+        None => {println!("Unreachable element at index: {}", v_index)}
+    }
+
+    let mut v = vec![100, 32, 57];
+    for i in &mut v {
+        *i += 50;
+    };
+
+}
+
+fn if_let() {
+    let some_u8_value = Some(0u8);
+    match some_u8_value {
+        Some(3) => println!("three"),
+        _ => ()
+    }
+} 
 
 fn value_in_cents(coin : Coin) -> u32 {
     match coin {
