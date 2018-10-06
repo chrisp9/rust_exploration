@@ -8,6 +8,37 @@ use std::collections::HashMap;
 use std::io::Read;
 use std::fs::File;
 
+mod news_aggregator;
+use news_aggregator::*;
+use std::fmt::Display;
+
+use std::thread;
+use std::time::Duration;
+
+struct Pair<T> {
+    x: T,
+    y: T
+}
+
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self {
+            x,
+            y
+        }
+    }
+}
+
+impl<T: Display + PartialOrd> Pair<T> {
+    fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);
+        } else {
+            println!("The largest member is y = {}", self.y);
+        }
+    }
+}
+
 struct User {
     username: String,
     email : String,
@@ -66,10 +97,124 @@ impl Message {
     }
 }
 
+ fn largest<T : PartialOrd>(list: &[T]) -> &T {
+     let mut largest = &list[0];
+
+     for ref item in list.iter() {
+         if *item > largest {
+             largest = &item;
+         }
+     }
+
+     largest
+ }
+
+struct Point<T> {
+    x : T,
+    y : T
+}
+
+fn closure_fun() {
+    let simulated_user_specified_value = 10;
+    let simulated_random_number = 7;
+
+    generate_workout(simulated_user_specified_value, simulated_random_number);
+}
+
+struct Cacher<T> where T : Fn(u32) -> u32 {
+    calculation: T,
+    value: HashMap<u32, u32>
+}
+
+impl<T> Cacher<T> where T: Fn(u32) -> u32 {
+    fn new(calculation: T) -> Cacher<T> {
+        Cacher {
+            calculation,
+            value: HashMap::new()
+        }
+    }
+
+    fn value(&mut self, arg: u32) -> u32 {
+        let g = self.value.entry(arg).or_insert((self.calculation)(arg));
+        g.clone()
+    }
+}
+
+
+fn generate_workout(intensity: u32, random_number: u32) {
+    let mut expensive_result = Cacher::new(|num| {
+        println!("calculating slowly...");
+        thread::sleep(Duration::from_secs(2));
+        intensity
+    });
+
+    if intensity < 25 {
+        println!(
+            "Today, do {} pushups!",
+            expensive_result.value(intensity)
+        );
+
+        println!(
+            "Next, do {} situps!",
+            expensive_result.value(intensity)
+        );
+    } else {
+        if random_number == 3 {
+            println!("Take a break today! Remember to stay hydrated!");
+        } else {
+            println!(
+            "Today, run for {} minutes!",
+            expensive_result.value(intensity));
+        }
+    }
+}
+
+fn simulated_expensive_calculation(intensity: u32) -> u32 {
+    println!("calculating slowly...");
+    thread::sleep(Duration::from_secs(2));
+    intensity
+}
+
+
 fn main() {
+
+    closure_fun();
+
     strings();
     hashmaps();
     read_username_from_file();
+    lifetimes();
+}
+
+fn lifetimes() {
+    let string1 = String::from("abcd");
+    let string2 = String::from("xyz");
+
+    let result;
+    {
+        result = longest(string1.as_str(), string2.as_str());
+    }
+    println!("The longest string is {}", result);
+}
+
+
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+fn news_aggregate() {
+    let tweet = news_aggregator::Tweet {
+        username: String::from("DonaldTrump"),
+        content: String::from("Wall"),
+        reply: false,
+        retweet: false
+    };
+
+    println!("1 new tweet: {}", tweet.summarize());
 }
 
 fn hashmaps() {
@@ -89,8 +234,6 @@ fn strings() {
     let s2 = String::from("World!");
 
     let s3 = s1 + &s2;
-
-
 }
 
 fn read_username_from_file() -> Result<String, io::Error> {
