@@ -114,6 +114,38 @@ struct Point<T> {
     y : T
 }
 
+#[derive(PartialEq, Debug)]
+struct Shoe {
+    size: u32,
+    style:String
+}
+
+fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: u32) -> Vec<Shoe> {
+    shoes.into_iter()
+        .filter(|s| s.size == shoe_size)
+        .collect()
+}
+
+#[test]
+fn filters_by_size() {
+    let shoes = vec![
+        Shoe { size: 10, style: String::from("sneaker")},
+        Shoe { size: 3, style: String::from("sandal")},
+        Shoe { size: 10, style: String::from("boot")}
+    ];
+
+    let in_my_size = shoes_in_my_size(shoes, 10);
+    assert_eq!(in_my_size, 
+        vec![
+            Shoe { size: 10, style: String::from("sneaker")},
+            Shoe { size: 10, style: String::from("boot")}
+        ]);
+}
+
+
+
+
+
 fn closure_fun() {
     let simulated_user_specified_value = 10;
     let simulated_random_number = 7;
@@ -175,6 +207,34 @@ fn simulated_expensive_calculation(intensity: u32) -> u32 {
     intensity
 }
 
+fn closure_capturing_context() {
+    let x = 4;
+    let equal_to_x = |z : u32| z == x;
+    let y = 4;
+    
+}
+
+fn iterators() {
+    let v1 = vec![1, 2, 3];
+    let v1_iter = v1.iter();
+
+    for val in v1_iter {
+        println!("Got: {}", val);
+    }
+}
+
+fn iterator_map() {
+    let v1 = vec![1, 2, 3];
+
+    let res: Vec<_> = v1.iter().map(|x| x + 1).collect();
+}
+
+fn iterator_sum() {
+    let v1 = vec![1, 2, 3];
+
+    let v1_iter = v1.iter();
+    let total: i32 = v1_iter.sum();
+}
 
 fn main() {
 
@@ -261,6 +321,32 @@ fn vector() {
     };
 
 }
+
+struct Counter {
+    count: u32
+}
+
+impl Counter {
+    fn new() -> Counter {
+        Counter { count: 0}
+    }
+}
+
+impl Iterator for Counter {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.count += 1;
+
+        if self.count < 6 {
+            Some(self.count)
+        }
+        else {
+            None
+        }
+    }
+}
+
 
 fn if_let() {
     let some_u8_value = Some(0u8);
